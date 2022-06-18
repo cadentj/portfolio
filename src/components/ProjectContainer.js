@@ -26,7 +26,7 @@ export default function ProjectContainer() {
             </Stack>
             <Container >
                 <Typography variant="h4" sx={{ textAlign: "center" }}>
-                    Featured Work
+                    Test
                 </Typography>
             </Container>
         </Stack>
