@@ -9,29 +9,24 @@ import { Container, Typography } from '@mui/material';
 import SwiperElement from './SwiperElement';
 import useHover from './useHover';
 
-
-const Slide = React.forwardRef((props,ref) => (
-    <Box ref={ref}>
-        <SwiperElement/>
-    </Box>
-));
+import '../styles/slides.css';
 
 
 export default function ProjectContainer() {
 
-
-    const [hoverRef1, isHovered1] = useHover();
-    const [hoverRef2, isHovered2] = useHover();
-    const [hoverRef3, isHovered3] = useHover();
-    const [hoverRef4, isHovered4] = useHover();
-
-    const text = "featued";
-    const hoveredSlide = () => {
-        if (isHovered1) text = "ISP";
-        if (isHovered2) text =  "College Email Bot";
-        if (isHovered3) text =  "Mav App";
-        if (isHovered4) text =  "Community Tutoring";
-        text = "Featured Works";
+    let initialTxt = "Featured Work";
+    const [text, setText] = React.useState(initialTxt);
+    
+    const Slide = ({project, stagger}) => {
+        console.log(stagger)
+        return <Box 
+            // sx={{mt:stagger}}
+            className={"slide " + stagger}
+            onMouseOver={() => setText(project)}
+            onMouseLeave={() => setText(initialTxt)} 
+            >
+            <SwiperElement/>
+        </Box>
     }
 
     return (
@@ -43,18 +38,21 @@ export default function ProjectContainer() {
                 direction="row"
                 spacing="10px"
             >
-                <Slide ref={hoverRef1}/>
-                <Slide ref={hoverRef2}/>
-                <Slide ref={hoverRef3}/>
-                <Slide ref={hoverRef4}/>
+                <Slide project="Housing Precarity Model" stagger="one"/>
+                <Slide project="Community Tutoring" stagger="two" />
+                <Slide project="Mav App 2.0" stagger="three" />
+                <Slide project="Receipt Bot" stagger="two"/>
+                <Slide project="Maverick Debate" stagger="one" />
+                <Slide project="Razors 'N' Blade" stagger="three"/>
             </Stack>
 
 
 
-            <Container >
-                <Typography variant="h4" sx={{ textAlign: "center" }} border={1}>
+            <Container sx={{ textAlign: "center", border: 1 }}>
+                <Typography variant="h4">
                     {text}
                 </Typography>
+                <Typography variant="subtitle2">Explore some of my projects</Typography>
             </Container>
         </Stack>
     );
