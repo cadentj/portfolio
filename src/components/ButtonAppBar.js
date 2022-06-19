@@ -10,7 +10,7 @@ import MailIcon from '@mui/icons-material/Mail';
 export default function ButtonAppBar() {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar sx={{position: "static", background: "transparent", boxShadow: 0}}>
+            <AppBar sx={{position: "fixed", background: "transparent", boxShadow: 0}}>
                 <Toolbar sx={{ justifyContent: "space-between", color:"black"}}>
                     <IconButton
                         size="large"

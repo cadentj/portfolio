@@ -1,13 +1,33 @@
+.back {
+    background:linear-gradient(0deg, rgba(255,255,255, 0.6), rgba(255,255,255, 0.6)), url('https://wallpaperaccess.com/full/217097.jpg');
+
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    background-color: transparent;
+
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    
+
+    
+}
+
+.list-heading {
+    position: absolute;
+    top: 50vh;
+}
+
 .list-container {
     position: absolute;
-    top: 50%;
 }
 
 .list-container:hover {
     color: transparent;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     position: absolute;
-    top: 50%;
 }
 
 .li:hover {
