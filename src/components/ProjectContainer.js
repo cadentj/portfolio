@@ -33,10 +33,12 @@ export default function ProjectContainer() {
         <Stack
             alignItems="center"
             style={{ minHeight: '90vh' }}
+            mt={4}
+            spacing={3}
         >
             <Stack
                 direction="row"
-                spacing="10px"
+                spacing="20px"
             >
                 <Slide project="Housing Precarity Model" stagger="one"/>
                 <Slide project="Community Tutoring" stagger="two" />
@@ -48,7 +50,7 @@ export default function ProjectContainer() {
 
 
 
-            <Container sx={{ textAlign: "center", border: 1 }}>
+            <Container sx={{ textAlign: "center", border: 0 }}>
                 <Typography variant="h4">
                     {text}
                 </Typography>
