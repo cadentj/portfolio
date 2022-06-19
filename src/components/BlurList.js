@@ -10,12 +10,13 @@ import '../styles/blur_list.css';
 
 export default function BlurList() {
     const Item = (props) => {
-        return <ListItem disablePadding {...props}>
+        return <ListItem disablePadding>
             <ListItemText
-                primary="Trash"
+                primary={props.name}
                 primaryTypographyProps={{
+                    textAlign: 'center',
                     fontWeight: 'medium',
-                    variant: 'h1',
+                    variant: 'h2',
                 }}
                 className="li"
             />
@@ -23,13 +24,12 @@ export default function BlurList() {
     }
 
     return (
-        <Box sx={{ width: '100%', bgcolor: 'background.paper' }} className="list-container">
-            <nav aria-label="secondary mailbox folders">
-                <Item textAlign="center" />
-                <Item textAlign="center" />
-                <Item textAlign="center" />
-                <Item textAlign="center" />
-            </nav>
+        <Box sx={{ width: '100%', height: "2000px" }} className="list-container">
+            <Item name="Housing Precarity Model" />
+            <Item name="Community Tutoring" />
+            <Item name="Mav App 2.0" />
+            <Item name="Maverick Debate" />
+            <Item name="Razors 'N' Blade" />
         </Box>
     );
 }

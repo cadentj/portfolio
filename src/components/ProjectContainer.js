@@ -42,6 +42,8 @@ export default function ProjectContainer() {
                 <ProjectSlide project="Receipt Bot" stagger="two"/>
                 <ProjectSlide project="Maverick Debate" stagger="one" />
                 <ProjectSlide project="Razors 'N' Blade" stagger="three"/>
+                <ProjectSlide project="Maverick Debate" stagger="one" />
+                <ProjectSlide project="Razors 'N' Blade" stagger="three"/>
             </Stack>
 
 

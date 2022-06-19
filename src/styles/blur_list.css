@@ -1,6 +1,13 @@
+.list-container {
+    position: absolute;
+    top: 50%;
+}
+
 .list-container:hover {
     color: transparent;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 50%;
 }
 
 .li:hover {
