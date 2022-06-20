@@ -2,13 +2,10 @@
     /* Really cool CSS3 transition shorthand */
     /* https://stackoverflow.com/a/10983757 */
     transition: background 0.1s linear;
+
+    /* Greyscale filter */
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
-
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 .overlay {

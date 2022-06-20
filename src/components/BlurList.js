@@ -21,8 +21,10 @@ export default function BlurList() {
 
     const Item = (props) => {
         return <ListItem
-            onMouseOver={() => {setText(images[props.image]);
-            console.log(text)}}
+            onMouseOver={() => {
+                setText(images[props.image]);
+                console.log(text)
+            }}
             onMouseLeave={() => setText(defaultImg)}
             disablePadding
         >
@@ -39,19 +41,27 @@ export default function BlurList() {
     }
 
     return (
-        <Box className="back" height="200vh" sx={{background:`url('${text}')`}}>
-            <Box className="overlay">
-                <Box sx={{ width: '100%' }} className="list-heading">
-                    <Typography variant="h3" sx={{ textAlign: "center", fontWeight: "medium" }}>Work</Typography>
-                    <Box sx={{ width: '100%' }} className="list-container">
-                        <Item name="Housing Precarity Model" image="one" />
-                        <Item name="Community Tutoring" image="two" />
-                        <Item name="Mav App 2.0" image="three" />
-                        {/* <Item name="Maverick Debate" image="four" />
+        <Box className="back" height="200vh"
+            sx={{
+                background: `url('${text}')`,
+                backgroundAttachment: "fixed",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+            }}
+        >
+    <Box className="overlay">
+        <Box sx={{ width: '100%' }} className="list-heading">
+            <Typography variant="h3" sx={{ textAlign: "center", fontWeight: "medium" }}>Work</Typography>
+            <Box sx={{ width: '100%' }} className="list-container">
+                <Item name="Housing Precarity Model" image="one" />
+                <Item name="Community Tutoring" image="two" />
+                <Item name="Mav App 2.0" image="three" />
+                {/* <Item name="Maverick Debate" image="four" />
                         <Item name="Razors 'N' Blade" image="five" /> */}
-                    </Box>
-                </Box>
             </Box>
         </Box>
+    </Box>
+        </Box >
     );
 }
