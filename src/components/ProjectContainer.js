@@ -29,8 +29,8 @@ export default function ProjectContainer() {
         <Stack
             alignItems="center"
             style={{ minHeight: '90vh' }}
-            mt={4}
             spacing={3}
+            className="container"
         >
             <Stack
                 direction="row"

@@ -8,6 +8,15 @@
     transition-duration: 200ms;
 }
 
+.container {
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    top: 10%;
+    justify-content: center;
+    
+}
+
 /* https://github.com/chakra-ui/chakra-ui/issues/2578 */
 /* Spent two hours tying to fix margins - apparently the MUI Stack component overrides margins but not padding*/
 
