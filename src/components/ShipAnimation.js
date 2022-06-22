@@ -196,12 +196,21 @@ export default function Animation(props) {
                     <directionalLight position={[-10, -10, -5]} intensity={1} />
                     <OrbitControls />
                     <Suspense>
+                        <Html fullscreen>
+                            <Box sx={{ mt: 2, ml: 2 }}>
+                                <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
+                                    Hi, I'm
+                                </Typography>
+                                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 100, fontSize: 200, color: 'white', lineHeight: 1 }}>
+                                    Caden
+                                    <br />Juang
+                                </Typography>
+                            </Box>
+                        </Html>
                         <Milky />
                         <Planets />
                         <SkyBox />
                         <MouseTrackingShip />
-                        <Hex />
-
                     </Suspense>
                 </Canvas>
             </Box>
