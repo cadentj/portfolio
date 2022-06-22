@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
 import { Box, Typography } from '@mui/material';
-import React, { useRef, Suspense } from 'react';
+import React, { useRef, Suspense, useState } from 'react';
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -47,20 +47,31 @@ const Planets = () => {
     return planetMesh;
 };
 
+const dummy = new Vector3()
+
 const Milky = () => {
     const gltf = useLoader(GLTFLoader, "./need_some_space/scene.gltf");
 
     const ref = useRef();
-    useFrame((state) => (ref.current.rotation.y += 0.005));
+    const [active, setActive] = useState(false);
+
+
+
+    useFrame((state) => {
+        ref.current.rotation.y += 0.005
+
+        if (active) {
+            state.camera.position.lerp(dummy.set(0, 2, 18), 0.1)
+        }
+    })
 
     return <mesh
         ref={ref}
+        onClick={() => setActive(!active)}
     >
         <primitive object={gltf.scene} position={[-2140, -2140, 2130]} scale={1500} />
     </mesh>;
 };
-
-const dummy = new Vector3()
 
 const Ship = () => {
 
@@ -191,7 +202,7 @@ export default function Animation(props) {
         <>
 
             <Box height="100vh" {...props} position="relative" ref={ref} >
-                <Canvas camera={{ fov: 70, position: [0, 2, 18] }}>
+                <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
                     <directionalLight position={[10, 10, 5]} intensity={2} />
                     <directionalLight position={[-10, -10, -5]} intensity={1} />
                     <OrbitControls />
@@ -201,7 +212,7 @@ export default function Animation(props) {
                                 <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
                                     Hi, I'm
                                 </Typography>
-                                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 100, fontSize: 200, color: 'white', lineHeight: 1 }}>
+                                <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 250, color: 'white', lineHeight: 1 }}>
                                     Caden
                                     <br />Juang
                                 </Typography>
