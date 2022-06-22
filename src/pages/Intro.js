@@ -5,10 +5,11 @@ import TemporaryDrawer from "../components/Drawer";
 import Animation from "../components/ShipAnimation";
 import { Box, Typography } from "@mui/material";
 
-export default function Home() {
+export default function Intro() {
     return (
         <Box>
-            <ProjectContainer/>
+            <Animation sx={{height:'100vh', width:'100%', zIndex:0, position:'fixed'}}/>
+
         </Box>        
     );
 }

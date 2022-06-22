@@ -1,10 +1,12 @@
 import ReactDOM from 'react-dom'
-import { Box } from '@mui/system';
+import { Box, Typography } from '@mui/material';
 import { useRef, Suspense } from 'react';
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CubeTextureLoader, Vector3 } from "three";
+import { Html } from '@react-three/drei';
+
 
 function SkyBox() {
     const { scene } = useThree();
@@ -69,9 +71,9 @@ const Ship = () => {
 
     //Old Camera following behind jet
     // useFrame((state) => {
-        //ref.current.position.z -= 0.013;
+    //ref.current.position.z -= 0.013;
 
-        //state.camera.position.lerp(dummy.set(0, 0, 0), 0.001)
+    //state.camera.position.lerp(dummy.set(0, 0, 0), 0.001)
     // })
 
     return (
@@ -110,21 +112,47 @@ const MouseTrackingShip = () => {
     )
 }
 
-
-export default function Animation() {
+function HtmlContent({ className, style, children, portal }) {
+    const { size } = useThree();
     return (
-        <Box height="100vh">
-            <Canvas camera={{ fov: 70, position: [0, 2, 18] }}>
+        <Html
+            portal={portal}
+            style={{
+                position: 'absolute',
+                top: -size.height / 2,
+                left: -size.width / 2,
+                width: size.width,
+                height: size.height
+            }}>
+            <div className={className} style={style}>
+                {children}
+            </div>
+        </Html>
+    )
+}
 
+
+
+export default function Animation(props) {
+    const domContent = useRef();
+    return (
+        <Box height="100vh" {...props}>
+            <Canvas camera={{ fov: 70, position: [0, 2, 18] }}>
                 <directionalLight position={[10, 10, 5]} intensity={2} />
                 <directionalLight position={[-10, -10, -5]} intensity={1} />
+                <Suspense>
 
-                <Suspense fallback={null}>
-                    <Milky/>
+                    <Milky />
                     <Planets />
                     <SkyBox />
 
                     <MouseTrackingShip />
+                    <HtmlContent portal={domContent}>
+                        <Typography style={{fontFamily: "Source Code Pro", color: "white", fontSize: 100}}>
+                            Hi, I'm Caden
+                        </Typography>
+                    </HtmlContent>
+
                 </Suspense>
             </Canvas>
         </Box>
