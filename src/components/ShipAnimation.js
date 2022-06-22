@@ -1,11 +1,12 @@
 import ReactDOM from 'react-dom'
 import { Box, Typography } from '@mui/material';
-import { useRef, Suspense } from 'react';
+import React, { useRef, Suspense } from 'react';
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CubeTextureLoader, Vector3 } from "three";
-import { Html } from '@react-three/drei';
+import { Html, OrbitControls } from '@react-three/drei';
+import useMouse from '@react-hook/mouse-position'
 
 
 function SkyBox() {
@@ -87,6 +88,25 @@ const Ship = () => {
     );
 };
 
+const Hex = () => {
+
+    const fbx = useLoader(FBXLoader, "./hexagon.fbx");
+
+
+    const ref = useRef();
+    useFrame((state) => (ref.current.rotation.z += 0.01));
+
+    return (
+        <mesh
+            rotation={[Math.PI * 2, 0, 0]}
+            position={[0, 2, 10]}
+            ref={ref}
+        >
+            <primitive object={fbx} scale={0.001} />
+        </mesh>
+    );
+};
+
 let x = 0;
 let y = 0;
 
@@ -96,11 +116,23 @@ const MouseTrackingShip = () => {
     const ref = useRef()
 
     useFrame((state) => {
-        const mouse = state.mouse;
-        const xChange = (mouse.x * viewport.width) / 10000;
-        const yChange = (mouse.y * viewport.width) / 10000;
-        x += (x < 0.25 && x > -0.25) ? xChange : ((x >= 0) ? -0.0002 : 0.0002);
-        y += (y < 0.10 && y > -0.20) ? yChange : ((y >= 0) ? -0.0002 : 0.0002);
+
+        if ((trackedX !== null && !isNaN(trackedX)) && (trackedY !== null && !isNaN(trackedY))) {
+            const xFactor = width / 0.25;
+            const yFactor = height / 0.15;
+            const xHalf = width / 2;
+            const yHalf = height / 2;
+            let transformedX = (Math.abs(xHalf - trackedX) / xFactor) * ((trackedX < xHalf) ? -1 : 1);
+            let transformedY = (Math.abs(yHalf - trackedY) / yFactor) * ((trackedY > yHalf) ? -1 : 1);
+            transformedX /= 50;
+            transformedY /= 50;
+            x += (x < 0.25 && x > -0.25) ? transformedX : ((x >= 0) ? -0.0002 : 0.0002);
+            y += (y < 0.10 && y > -0.10) ? transformedY : ((y >= 0) ? -0.0002 : 0.0002);
+        } else {
+            x += 0;
+            x += 0;
+        }
+
         // Besides testing, how am I supposed to know which positional argument is position vs point?
         ref.current.rotation.set(-y, x, 0)
     })
@@ -119,10 +151,10 @@ function HtmlContent({ className, style, children, portal }) {
             portal={portal}
             style={{
                 position: 'absolute',
-                top: -size.height / 2,
-                left: -size.width / 2,
-                width: size.width,
-                height: size.height
+                // top: -size.height / 2,
+                // left: -size.width / 2,
+                // width: size.width,
+                // height: size.height  
             }}>
             <div className={className} style={style}>
                 {children}
@@ -131,30 +163,50 @@ function HtmlContent({ className, style, children, portal }) {
     )
 }
 
+const TestPortal = (props) => {
+    return ReactDOM.createPortal(
+        <>
+            {props.children}
+        </>
+    );
+}
 
+let trackedX;
+let trackedY;
+let width;
+let height;
 
 export default function Animation(props) {
     const domContent = useRef();
+    const ref = React.useRef(null);
+    const mouse = useMouse(ref);
+
+    trackedX = mouse.x;
+    trackedY = mouse.y;
+    width = mouse.elementWidth;
+    height = mouse.elementHeight;
+
+
     return (
-        <Box height="100vh" {...props}>
-            <Canvas camera={{ fov: 70, position: [0, 2, 18] }}>
-                <directionalLight position={[10, 10, 5]} intensity={2} />
-                <directionalLight position={[-10, -10, -5]} intensity={1} />
-                <Suspense>
+        <>
 
-                    <Milky />
-                    <Planets />
-                    <SkyBox />
+            <Box height="100vh" {...props} position="relative" ref={ref} >
+                <Canvas camera={{ fov: 70, position: [0, 2, 18] }}>
+                    <directionalLight position={[10, 10, 5]} intensity={2} />
+                    <directionalLight position={[-10, -10, -5]} intensity={1} />
+                    <OrbitControls />
+                    <Suspense>
+                        <Milky />
+                        <Planets />
+                        <SkyBox />
+                        <MouseTrackingShip />
+                        <Hex />
 
-                    <MouseTrackingShip />
-                    <HtmlContent portal={domContent}>
-                        <Typography style={{fontFamily: "Source Code Pro", color: "white", fontSize: 100}}>
-                            Hi, I'm Caden
-                        </Typography>
-                    </HtmlContent>
+                    </Suspense>
+                </Canvas>
+            </Box>
 
-                </Suspense>
-            </Canvas>
-        </Box>
+
+        </>
     )
 }
