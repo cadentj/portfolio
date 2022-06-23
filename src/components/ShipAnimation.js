@@ -118,13 +118,12 @@ const MouseTrackingShip = () => {
 
     return (
         <mesh ref={ref}>
-            <Ship/>
+            <Ship />
         </mesh>
     )
 }
 
 export default function Animation(props) {
-    const domContent = useRef();
     const ref = React.useRef(null);
     const mouse = useMouse(ref);
 
@@ -135,38 +134,33 @@ export default function Animation(props) {
 
 
     return (
-        <>
-
-            <Box height="100vh" {...props} position="relative" ref={ref} >
-                <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
-                    <directionalLight position={[10, 10, 5]} intensity={2} />
-                    <directionalLight position={[-10, -10, -5]} intensity={1} />
-                    <Suspense>
-                        <Html fullscreen>
-                            <Box sx={{ mt: 10, ml: 5 }}>
-                                <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
-                                    Hi, I'm
-                                </Typography>
-                                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
-                                    Caden
-                                    <br />Juang
-                                </Typography>
-                            </Box>
-                            <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
-                                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
-                                    Lorem ipsum dolor sit amet,<br/> consectetur adipiscing elit,<br/> sed do eiusmod tempor incid<br/> labore et dolore magna alia.
-                                </Typography>
-                            </Box>
-                        </Html>
-                        <Milky />
-                        <MiningStation />
-                        <BlackBox />
-                        <MouseTrackingShip />
-                    </Suspense>
-                </Canvas>
-            </Box>
-
-
-        </>
+        <Box height="100vh" {...props} position="relative" ref={ref} >
+            <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
+                <directionalLight position={[10, 10, 5]} intensity={2} />
+                <directionalLight position={[-10, -10, -5]} intensity={1} />
+                <Suspense>
+                    <Html fullscreen>
+                        <Box sx={{ mt: 10, ml: 5 }}>
+                            <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
+                                Hi, I'm
+                            </Typography>
+                            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
+                                Caden
+                                <br />Juang
+                            </Typography>
+                        </Box>
+                        <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
+                            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
+                                Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
+                            </Typography>
+                        </Box>
+                    </Html>
+                    <Milky />
+                    <MiningStation />
+                    <BlackBox />
+                    <MouseTrackingShip />
+                </Suspense>
+            </Canvas>
+        </Box>
     )
 }
