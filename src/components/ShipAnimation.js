@@ -36,9 +36,9 @@ const Planets = () => {
 
     const planetMesh = <mesh
         ref={ref}
-        position={[10,-2,15]}
+        position={[10, -2, 15]}
     >
-        <primitive object={gltf.scene} position={[-1,0,4.65]} scale={0.1} />
+        <primitive object={gltf.scene} position={[-1, 0, 4.65]} scale={0.1} />
     </mesh>;
 
 
@@ -188,13 +188,18 @@ export default function Animation(props) {
                     <directionalLight position={[-10, -10, -5]} intensity={1} />
                     <Suspense>
                         <Html fullscreen>
-                            <Box sx={{ mt: 2, ml: 2 }}>
+                            <Box sx={{ mt: 10, ml: 5 }}>
                                 <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
                                     Hi, I'm
                                 </Typography>
-                                <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 250, color: 'white', lineHeight: 1 }}>
+                                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
                                     Caden
                                     <br />Juang
+                                </Typography>
+                            </Box>
+                            <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
+                                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
+                                    Lorem ipsum dolor sit amet,<br/> consectetur adipiscing elit,<br/> sed do eiusmod tempor incid<br/> labore et dolore magna alia.
                                 </Typography>
                             </Box>
                         </Html>
