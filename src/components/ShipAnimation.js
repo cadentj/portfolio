@@ -1,12 +1,12 @@
 import ReactDOM from 'react-dom'
 import { Box, Typography } from '@mui/material';
-import React, { useRef, Suspense, useState } from 'react';
+import React, { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CubeTextureLoader, Vector3 } from "three";
-import { Html, OrbitControls } from '@react-three/drei';
-import useMouse from '@react-hook/mouse-position'
+import { Html, OrbitControls, Loader } from '@react-three/drei';
+import useMouse from '@react-hook/mouse-position';
 
 // Dummy target for camera lerp
 const dummy = new Vector3()
@@ -123,44 +123,55 @@ const MouseTrackingShip = () => {
     )
 }
 
-export default function Animation(props) {
-    const ref = React.useRef(null);
-    const mouse = useMouse(ref);
+function Test() {
+    console.log("rendered");
+    return <></>
+}
 
-    trackedX = mouse.x;
-    trackedY = mouse.y;
-    width = mouse.elementWidth;
-    height = mouse.elementHeight;
+
+
+export default function Animation(props) {
+    width = window.innerWidth;
+    height = window.innerHeight;
 
 
     return (
-        <Box height="100vh" {...props} position="relative" ref={ref} >
+        <div onMouseMove={(event) => {
+            trackedX = event.clientX;
+            trackedY = event.clientY;
+        }}>
+            
+        <Box height="100vh" {...props} position="relative" >
             <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
                 <directionalLight position={[10, 10, 5]} intensity={2} />
                 <directionalLight position={[-10, -10, -5]} intensity={1} />
+                <Html fullscreen>
+                    <Test />
+                    <Box sx={{ mt: 10, ml: 5 }}>
+                        <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
+                            Hi, I'm
+                        </Typography>
+                        <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
+                            Caden
+                            <br />Juang
+                        </Typography>
+                    </Box>
+                    <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
+                        <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
+                            Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
+                        </Typography>
+                    </Box>
+                </Html>
                 <Suspense>
-                    <Html fullscreen>
-                        <Box sx={{ mt: 10, ml: 5 }}>
-                            <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
-                                Hi, I'm
-                            </Typography>
-                            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
-                                Caden
-                                <br />Juang
-                            </Typography>
-                        </Box>
-                        <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
-                            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
-                                Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
-                            </Typography>
-                        </Box>
-                    </Html>
                     <Milky />
                     <MiningStation />
                     <BlackBox />
-                    <MouseTrackingShip />
+                    <MouseTrackingShip/>
                 </Suspense>
             </Canvas>
+            <Loader />
         </Box>
+        
+        </div>
     )
 }
