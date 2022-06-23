@@ -55,6 +55,28 @@ const MiningStation = () => {
     return planetMesh;
 };
 
+
+const Text = () => {
+
+    return <Html fullscreen>
+        <Box sx={{ mt: 10, ml: 5 }}>
+            <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
+                Hi, I'm
+            </Typography>
+            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
+                Caden
+                <br />Juang
+            </Typography>
+        </Box>
+        <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
+            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
+                Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
+            </Typography>
+        </Box>
+    </Html >;
+};
+
+
 const Milky = () => {
     const gltf = useLoader(GLTFLoader, "./need_some_space/scene.gltf");
 
@@ -123,12 +145,6 @@ const MouseTrackingShip = () => {
     )
 }
 
-function Test() {
-    console.log("rendered");
-    return <></>
-}
-
-
 
 export default function Animation(props) {
     width = window.innerWidth;
@@ -140,38 +156,22 @@ export default function Animation(props) {
             trackedX = event.clientX;
             trackedY = event.clientY;
         }}>
-            
-        <Box height="100vh" {...props} position="relative" >
-            <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
-                <directionalLight position={[10, 10, 5]} intensity={2} />
-                <directionalLight position={[-10, -10, -5]} intensity={1} />
-                <Html fullscreen>
-                    <Test />
-                    <Box sx={{ mt: 10, ml: 5 }}>
-                        <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
-                            Hi, I'm
-                        </Typography>
-                        <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
-                            Caden
-                            <br />Juang
-                        </Typography>
-                    </Box>
-                    <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
-                        <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
-                            Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
-                        </Typography>
-                    </Box>
-                </Html>
-                <Suspense>
-                    <Milky />
-                    <MiningStation />
-                    <BlackBox />
-                    <MouseTrackingShip/>
-                </Suspense>
-            </Canvas>
-            <Loader />
-        </Box>
-        
+
+            <Box height="100vh" {...props} position="relative" >
+                <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
+                    <directionalLight position={[10, 10, 5]} intensity={2} />
+                    <directionalLight position={[-10, -10, -5]} intensity={1} />
+                    <Suspense>
+                        <Text />
+                        <Milky />
+                        <MiningStation />
+                        <BlackBox />
+                        <MouseTrackingShip />
+                    </Suspense>
+                </Canvas>
+                <Loader />
+            </Box>
+
         </div>
     )
 }
