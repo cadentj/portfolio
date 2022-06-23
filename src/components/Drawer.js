@@ -29,19 +29,26 @@ export default function DrawerButton() {
         setState({ ...state, [anchor]: open });
     };
 
-    const list = (anchor) => (
+    const list = () => (
         <Box
-            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+            sx={{ width: 250, height: "100vh" }}
             role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
+            onClick={toggleDrawer('top', false)}
+            onKeyDown={toggleDrawer('top', false)}
         >
-            <List>
+            <List height="100%">
                 <ListItem key="home" disablePadding>
                     <Link to="/" style={{ textDecoration: 'none' }}>
                         <ListItemButton>
 
-                            <ListItemText primary="Home" />
+                            <ListItemText
+                                primary="Home"
+                                primaryTypographyProps={{
+                                    textAlign: 'center',
+                                    fontWeight: 'medium',
+                                    variant: 'h1',
+                                }}
+                            />
 
                         </ListItemButton>
                     </Link>
@@ -50,7 +57,14 @@ export default function DrawerButton() {
                 <ListItem key="work" disablePadding>
                     <Link to="/work" style={{ textDecoration: 'none' }}>
                         <ListItemButton>
-                            <ListItemText primary="Work" />
+                            <ListItemText
+                                primary="Works"
+                                primaryTypographyProps={{
+                                    textAlign: 'center',
+                                    fontWeight: 'medium',
+                                    variant: 'h1',
+                                }}
+                            />
 
                         </ListItemButton>
                     </Link>
