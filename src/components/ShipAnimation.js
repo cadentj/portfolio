@@ -6,7 +6,7 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CubeTextureLoader, Vector3 } from "three";
 import { Html, OrbitControls, Loader } from '@react-three/drei';
-import useMouse from '@react-hook/mouse-position';
+import { useNavigate } from 'react-router-dom';
 
 // Dummy target for camera lerp
 const dummy = new Vector3()
@@ -18,6 +18,12 @@ let height;
 // Frame updated ship position
 let x = 0;
 let y = 0;
+// Has camera reached ship on scroll
+// Moved out of milky method to prevent it from reloading on state update
+let reached = false;
+// Text doesn't render initially for some reason, but all other meshes do
+// When the milky way mesh renders, it updates state to render in the lagging text
+let hasRendered = false;
 
 function BlackBox() {
     const { scene } = useThree();
@@ -37,7 +43,7 @@ function BlackBox() {
     return null;
 }
 
-const MiningStation = () => {
+const MiningStation = ({ handleDoubleClick }) => {
     const gltf = useLoader(GLTFLoader, "./station/scene.gltf");
 
     const ref = useRef();
@@ -56,44 +62,73 @@ const MiningStation = () => {
 };
 
 
-const Text = () => {
-
-    return <Html fullscreen>
-        <Box sx={{ mt: 10, ml: 5 }}>
-            <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
-                Hi, I'm
-            </Typography>
-            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
-                Caden
-                <br />Juang
-            </Typography>
-        </Box>
-        <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
-            <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
-                Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
-            </Typography>
-        </Box>
-    </Html >;
+const Text = ({active}) => {
+    if (!active) {
+        return <Html fullscreen>
+            <Box sx={{ mt: 10, ml: 5 }}>
+                <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
+                    Hi, I'm
+                </Typography>
+                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
+                    Caden
+                    <br />Juang
+                </Typography>
+            </Box>
+        </Html >
+    } else {
+        return <Html fullscreen>
+            <Box sx={{ mt: 10, ml: 5 }}>
+                <Typography style={{ fontFamily: 'Source Code Pro', fontSize: 20, color: 'white' }}>
+                    Hi, I'm
+                </Typography>
+                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
+                    Caden
+                    <br />Juang
+                </Typography>
+            </Box>
+            <Box sx={{ position: 'absolute', right: '0px', mr: 15 }}>
+                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 20, color: 'white' }}>
+                    Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
+                </Typography>
+            </Box>
+        </Html >
+    }
 };
 
 
-const Milky = () => {
+const Milky = ({ handleDoubleClick, handleReached, updateState}) => {
     const gltf = useLoader(GLTFLoader, "./need_some_space/scene.gltf");
 
     const ref = useRef();
     const [active, setActive] = useState(false);
 
+    const targetPosition = new Vector3(0, 2, 20);
+
     useFrame((state) => {
         ref.current.rotation.y += 0.004
-
-        if (active) {
-            state.camera.position.lerp(dummy.set(0, 2, 20), 0.1)
+        console.log(state.camera.position.z);
+        if (state.camera.position.z < targetPosition.getComponent(2) && reached==false) {
+            reached = true;
+            handleReached();
+        }
+        if (active && state.camera.position.z > targetPosition.getComponent(2)) {
+            state.camera.position.lerp(dummy.set(0, 2, 19.5), 0.2);
         }
     })
 
     return <mesh
         ref={ref}
-        onClick={() => setActive(!active)}
+        onWheel={() => {
+            if (!reached) setActive(!active);
+        }}
+        onDoubleClick={handleDoubleClick}
+        
+        onUpdate={() => {
+            if (!hasRendered) {
+                hasRendered = true;
+                updateState()
+            }
+        }}
     >
         <primitive object={gltf.scene} position={[-2140, -2140, 2130]} scale={1500} />
     </mesh>;
@@ -117,8 +152,7 @@ const MouseTrackingShip = () => {
 
     const ref = useRef()
 
-    useFrame((state) => {
-
+    useFrame(() => {
         if ((trackedX !== null && !isNaN(trackedX)) && (trackedY !== null && !isNaN(trackedY))) {
             const xFactor = width / 0.25;
             const yFactor = height / 0.15;
@@ -151,20 +185,35 @@ export default function Animation(props) {
     height = window.innerHeight;
 
 
+    let navigate = useNavigate();
+    const [active, setActive] = useState(false);
+    const [update, setUpdate] = useState(false);
+
+    function handleDoubleClick() {
+        navigate('./home');
+    }
+    function handleReached() {
+        setActive(!active);
+    }
+    function updateState() {
+        setUpdate(!update)
+        console.log("updated!")
+    }
+
     return (
         <div onMouseMove={(event) => {
             trackedX = event.clientX;
             trackedY = event.clientY;
         }}>
 
-            <Box height="100vh" {...props} position="relative" >
+            <Box height="100vh" {...props} position="relative">
                 <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
                     <directionalLight position={[10, 10, 5]} intensity={2} />
                     <directionalLight position={[-10, -10, -5]} intensity={1} />
                     <Suspense>
-                        <Text />
-                        <Milky />
-                        <MiningStation />
+                        <Text active={active}/>
+                        <Milky handleDoubleClick={handleDoubleClick} handleReached={handleReached} updateState={updateState}/>
+                        <MiningStation/>
                         <BlackBox />
                         <MouseTrackingShip />
                     </Suspense>

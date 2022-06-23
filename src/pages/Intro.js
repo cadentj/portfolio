@@ -5,10 +5,12 @@ import TemporaryDrawer from "../components/Drawer";
 import Animation from "../components/ShipAnimation";
 import { Box, Typography } from "@mui/material";
 
+
 export default function Intro() {
+
     return (
         <Box>
-            <Animation sx={{height:'100vh', width:'100%', zIndex:0, position:'fixed'}}/>
+            <Animation sx={{height:'100vh', width:'100%', position:'fixed'}}/>
 
         </Box>        
     );

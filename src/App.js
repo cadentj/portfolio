@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
 import Home from './pages/Home';
 import Work from './pages/Work';
+import Animation from './components/ShipAnimation';
 import Intro from './pages/Intro';
 
 import {
@@ -26,7 +26,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path="/" element={<Intro />} />
+        <Route path="/" element={<Animation />} />
         <Route path="*" element={<MainLayoutRoutes />} />
       </Routes>
     </ThemeProvider>
