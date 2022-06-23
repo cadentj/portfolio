@@ -8,8 +8,18 @@ import { CubeTextureLoader, Vector3 } from "three";
 import { Html, OrbitControls } from '@react-three/drei';
 import useMouse from '@react-hook/mouse-position'
 
+// Dummy target for camera lerp
+const dummy = new Vector3()
+// Mouse tracking library data
+let trackedX;
+let trackedY;
+let width;
+let height;
+// Frame updated ship position
+let x = 0;
+let y = 0;
 
-function SkyBox() {
+function BlackBox() {
     const { scene } = useThree();
     const loader = new CubeTextureLoader();
     // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
@@ -27,35 +37,29 @@ function SkyBox() {
     return null;
 }
 
-const Planets = () => {
+const MiningStation = () => {
     const gltf = useLoader(GLTFLoader, "./station/scene.gltf");
 
     const ref = useRef();
-    useFrame((state) => (ref.current.rotation.y += 0.01));
-
+    useFrame(() => (ref.current.rotation.y += 0.01));
 
     const planetMesh = <mesh
         ref={ref}
+        // Actual position
         position={[10, -2, 15]}
     >
+        // Position around which the station rotates
         <primitive object={gltf.scene} position={[-1, 0, 4.65]} scale={0.1} />
     </mesh>;
 
-
-
-
     return planetMesh;
 };
-
-const dummy = new Vector3()
 
 const Milky = () => {
     const gltf = useLoader(GLTFLoader, "./need_some_space/scene.gltf");
 
     const ref = useRef();
     const [active, setActive] = useState(false);
-
-
 
     useFrame((state) => {
         ref.current.rotation.y += 0.004
@@ -75,22 +79,10 @@ const Milky = () => {
 
 const Ship = () => {
 
-    const ref = useRef()
-
-
     const fbx = useLoader(FBXLoader, "./X-Wing.fbx");
-
-
-    //Old Camera following behind jet
-    // useFrame((state) => {
-    //ref.current.position.z -= 0.013;
-
-    //state.camera.position.lerp(dummy.set(0, 0, 0), 0.001)
-    // })
 
     return (
         <mesh
-            ref={ref}
             position={[0, 2, 15]}
             rotation={[0, Math.PI, 0]}
         >
@@ -99,12 +91,8 @@ const Ship = () => {
     );
 };
 
-let x = 0;
-let y = 0;
-
 const MouseTrackingShip = () => {
 
-    const { viewport } = useThree()
     const ref = useRef()
 
     useFrame((state) => {
@@ -125,48 +113,15 @@ const MouseTrackingShip = () => {
             x += 0;
         }
 
-        // Besides testing, how am I supposed to know which positional argument is position vs point?
         ref.current.rotation.set(-y, x, 0)
     })
 
     return (
         <mesh ref={ref}>
-            <Ship />
+            <Ship/>
         </mesh>
     )
 }
-
-function HtmlContent({ className, style, children, portal }) {
-    const { size } = useThree();
-    return (
-        <Html
-            portal={portal}
-            style={{
-                position: 'absolute',
-                // top: -size.height / 2,
-                // left: -size.width / 2,
-                // width: size.width,
-                // height: size.height  
-            }}>
-            <div className={className} style={style}>
-                {children}
-            </div>
-        </Html>
-    )
-}
-
-const TestPortal = (props) => {
-    return ReactDOM.createPortal(
-        <>
-            {props.children}
-        </>
-    );
-}
-
-let trackedX;
-let trackedY;
-let width;
-let height;
 
 export default function Animation(props) {
     const domContent = useRef();
@@ -204,8 +159,8 @@ export default function Animation(props) {
                             </Box>
                         </Html>
                         <Milky />
-                        <Planets />
-                        <SkyBox />
+                        <MiningStation />
+                        <BlackBox />
                         <MouseTrackingShip />
                     </Suspense>
                 </Canvas>
