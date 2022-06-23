@@ -28,7 +28,7 @@ function SkyBox() {
 }
 
 const Planets = () => {
-    const gltf = useLoader(GLTFLoader, "./scene.gltf");
+    const gltf = useLoader(GLTFLoader, "./station/scene.gltf");
 
     const ref = useRef();
     useFrame((state) => (ref.current.rotation.y += 0.01));
@@ -36,9 +36,9 @@ const Planets = () => {
 
     const planetMesh = <mesh
         ref={ref}
-        position={[10, 0, 10]}
+        position={[10,-2,15]}
     >
-        <primitive object={gltf.scene} position={[-5, 0, 12.5]} scale={8} />
+        <primitive object={gltf.scene} position={[-1,0,4.65]} scale={0.1} />
     </mesh>;
 
 
@@ -58,10 +58,10 @@ const Milky = () => {
 
 
     useFrame((state) => {
-        ref.current.rotation.y += 0.005
+        ref.current.rotation.y += 0.004
 
         if (active) {
-            state.camera.position.lerp(dummy.set(0, 2, 18), 0.1)
+            state.camera.position.lerp(dummy.set(0, 2, 20), 0.1)
         }
     })
 
@@ -94,25 +94,6 @@ const Ship = () => {
             position={[0, 2, 15]}
             rotation={[0, Math.PI, 0]}
         >
-            <primitive object={fbx} scale={0.0005} />
-        </mesh>
-    );
-};
-
-const Hex = () => {
-
-    const fbx = useLoader(FBXLoader, "./hexagon.fbx");
-
-
-    const ref = useRef();
-    useFrame((state) => (ref.current.rotation.z += 0.01));
-
-    return (
-        <mesh
-            rotation={[Math.PI * 2, 0, 0]}
-            position={[0, 2, 10]}
-            ref={ref}
-        >
             <primitive object={fbx} scale={0.001} />
         </mesh>
     );
@@ -135,10 +116,10 @@ const MouseTrackingShip = () => {
             const yHalf = height / 2;
             let transformedX = (Math.abs(xHalf - trackedX) / xFactor) * ((trackedX < xHalf) ? -1 : 1);
             let transformedY = (Math.abs(yHalf - trackedY) / yFactor) * ((trackedY > yHalf) ? -1 : 1);
-            transformedX /= 50;
-            transformedY /= 50;
-            x += (x < 0.25 && x > -0.25) ? transformedX : ((x >= 0) ? -0.0002 : 0.0002);
-            y += (y < 0.10 && y > -0.10) ? transformedY : ((y >= 0) ? -0.0002 : 0.0002);
+            transformedX /= 15;
+            transformedY /= 15;
+            x += (x < 0.35 && x > -0.35) ? transformedX : ((x >= 0) ? -0.0002 : 0.0002);
+            y += (y < 0.15 && y > -0.15) ? transformedY : ((y >= 0) ? -0.0002 : 0.0002);
         } else {
             x += 0;
             x += 0;
@@ -205,7 +186,6 @@ export default function Animation(props) {
                 <Canvas camera={{ fov: 70, position: [0, 2, 100] }}>
                     <directionalLight position={[10, 10, 5]} intensity={2} />
                     <directionalLight position={[-10, -10, -5]} intensity={1} />
-                    <OrbitControls />
                     <Suspense>
                         <Html fullscreen>
                             <Box sx={{ mt: 2, ml: 2 }}>
