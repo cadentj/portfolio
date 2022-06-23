@@ -62,7 +62,7 @@ const MiningStation = ({ handleDoubleClick }) => {
 };
 
 
-const Text = ({active}) => {
+const Text = ({ active }) => {
     if (!active) {
         return <Html fullscreen>
             <Box sx={{ mt: 10, ml: 5 }}>
@@ -72,6 +72,11 @@ const Text = ({active}) => {
                 <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 150, color: 'white', lineHeight: 1 }}>
                     Caden
                     <br />Juang
+                </Typography>
+            </Box>
+            <Box sx={{ position: 'absolute', bottom: '0px', left: '50%', mb:3, transform: 'translate(-50%, -50%)' }}>
+                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 15, color: 'white' }}>
+                    &gt;&gt;&gt;  scroll to advance &lt;&lt;&lt;
                 </Typography>
             </Box>
         </Html >
@@ -91,12 +96,17 @@ const Text = ({active}) => {
                     Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit,<br /> sed do eiusmod tempor incid<br /> labore et dolore magna alia.
                 </Typography>
             </Box>
+            <Box sx={{ position: 'absolute', bottom: '0px', left: '50%', mb:7, transform: 'translate(-50%, -50%)' }}>
+                <Typography style={{ fontFamily: 'Source Code Pro', fontWeight: 200, fontSize: 15, color: 'white' }}>
+                    &gt;&gt;&gt; click to continue &lt;&lt;&lt;
+                </Typography>
+            </Box>
         </Html >
     }
 };
 
 
-const Milky = ({ handleDoubleClick, handleReached, updateState}) => {
+const Milky = ({ handleClick, handleReached, updateState }) => {
     const gltf = useLoader(GLTFLoader, "./need_some_space/scene.gltf");
 
     const ref = useRef();
@@ -105,9 +115,8 @@ const Milky = ({ handleDoubleClick, handleReached, updateState}) => {
     const targetPosition = new Vector3(0, 2, 20);
 
     useFrame((state) => {
-        ref.current.rotation.y += 0.004
-        console.log(state.camera.position.z);
-        if (state.camera.position.z < targetPosition.getComponent(2) && reached==false) {
+        ref.current.rotation.y += 0.004;
+        if (state.camera.position.z < targetPosition.getComponent(2) && reached == false) {
             reached = true;
             handleReached();
         }
@@ -121,8 +130,8 @@ const Milky = ({ handleDoubleClick, handleReached, updateState}) => {
         onWheel={() => {
             if (!reached) setActive(!active);
         }}
-        onDoubleClick={handleDoubleClick}
-        
+        onClick={handleClick}
+
         onUpdate={() => {
             if (!hasRendered) {
                 hasRendered = true;
@@ -189,7 +198,7 @@ export default function Animation(props) {
     const [active, setActive] = useState(false);
     const [update, setUpdate] = useState(false);
 
-    function handleDoubleClick() {
+    function handleClick() {
         navigate('./home');
     }
     function handleReached() {
@@ -197,7 +206,6 @@ export default function Animation(props) {
     }
     function updateState() {
         setUpdate(!update)
-        console.log("updated!")
     }
 
     return (
@@ -211,9 +219,9 @@ export default function Animation(props) {
                     <directionalLight position={[10, 10, 5]} intensity={2} />
                     <directionalLight position={[-10, -10, -5]} intensity={1} />
                     <Suspense>
-                        <Text active={active}/>
-                        <Milky handleDoubleClick={handleDoubleClick} handleReached={handleReached} updateState={updateState}/>
-                        <MiningStation/>
+                        <Text active={active} />
+                        <Milky handleClick={handleClick} handleReached={handleReached} updateState={updateState} />
+                        <MiningStation />
                         <BlackBox />
                         <MouseTrackingShip />
                     </Suspense>
